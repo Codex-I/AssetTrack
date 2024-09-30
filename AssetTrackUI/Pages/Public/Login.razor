@@ -1,0 +1,145 @@
+﻿@page "/"
+@layout EmptyLayout;
+
+
+
+
+<a href="https://front.codes/" class="logo text-decoration-none fs-3" target="_blank">
+    AssetTrack
+</a>
+
+<div class="section">
+    <div class="container">
+        <div class="row full-height justify-content-center">
+            <div class="col-12 text-center align-self-center py-5">
+                <div class="section pb-5 pt-5 pt-sm-2 text-center">
+                    <h6 class="mb-0 pb-3"><span>Log In </span><span>Sign Up</span></h6>
+                    <input class="checkbox" type="checkbox" id="reg-log" name="reg-log" />
+                    <label for="reg-log"></label>
+                    <div class="card-3d-wrap mx-auto">
+                        <div class="card-3d-wrapper">
+                            <div class="card-front bg-primary">
+                                <div class="center-wrap">
+                                    <div class="section text-center">
+                                        <EditForm Model="Model" OnValidSubmit="SignInAsync">
+                                            <h4 class="mb-4 pb-3">Log In</h4>
+                                            <div class="col-md-12 mb-3 text-start">
+                                                <label for="Email" class="form-label">Email</label>
+                                                <InputText id="Email" @bind-Value="userLogin.Email" class="form-control" />
+                                            </div>
+                                            <div class="col-md-12 mb-3 text-start">
+                                                <label for="Password" class="form-label">Password</label>
+                                                <InputText id="Password" @bind-Value="userLogin.Password" class="form-control" type="password" />
+                                            </div>
+                                            <button type="submit" class="btn btn-dark">Signup</button>
+                                            <p class="mb-0 mt-4 text-center"><a href="#0" class="text-light text-decoration-none">Forgot your password?</a></p>
+                                        </EditForm>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-back bg-primary">
+                                <div class="center-wrap">
+                                    <div class="section">
+                                        <EditForm Model="Model" OnValidSubmit="SignUpAsync">
+                                            <h4 class="mb-4">Sign Up</h4>
+                                            <div class="row mb-3 text-start">
+                                                <div class="col-md-6">
+                                                    <label for="First Name" class="form-label">First Name</label>
+                                                    <InputText id="fName" @bind-Value="Model.FirstName" class="form-control" />
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="Last Name" class="form-label text-start">Last Name</label>
+                                                    <InputText id="lName" @bind-Value="Model.LastName" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3 text-start">
+                                                <div class="col-md-6">
+                                                    <label for="Email" class="form-label">Email</label>
+                                                    <InputText id="Email" @bind-Value="Model.Email" class="form-control" />
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="Phone" class="form-label">Phone Number</label>
+                                                    <InputText id="Phone" @bind-Value="Model.PhoneNumber" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mb-3 text-start">
+                                                <label for="Password" class="form-label">Password</label>
+                                                <InputText id="Password" @bind-Value="Model.Password" class="form-control" type="password" />
+                                            </div>
+                                            <button type="submit" class="btn btn-dark">Signup</button>
+                                        </EditForm>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    public CreateUserRequest Model { get; set; } = new();
+    public UserLoginRequest userLogin = new();
+
+    private async Task SignInAsync()
+    {
+        try
+        {
+            var loginResponse = await apiClient.ApiAuthLoginAsync(userLogin);
+            await Authenticate(loginResponse);
+
+        }
+        catch (Exception ex)
+        {
+            await alert.Error(ex.Message, "Error");
+        }
+    }
+
+    private async Task SignUpAsync()
+    {
+        try
+        {
+            await apiClient.ApiUsersRegisterAsync(Model);
+            var loginRequest = new UserLoginRequest()
+                {
+                    Email = Model.Email,
+                    Password = Model.Password
+
+                };
+            var loginResponse = await apiClient.ApiAuthLoginAsync(loginRequest);
+            await Authenticate(loginResponse);
+
+        }
+        catch (Exception ex)
+        {
+            await alert.Error(ex.Message, "Error");
+        }
+    }
+
+    private async Task Authenticate(UserLoginResponse loginResponse)
+    {
+        try
+        {
+            if (loginResponse?.AccessToken is not null)
+            {
+                Http.DefaultRequestHeaders.Authorization =
+                     new AuthenticationHeaderValue("Bearer", loginResponse.AccessToken);
+            }
+            else
+            {
+                throw new Exception("Login failed. Access token is null.");
+            }
+            var authState = await ((Features.Authentication.AssetTrackAuthProvider)auth)
+            .GetAuthenticationStateAsync();
+            nav.NavigateTo("/Index");
+        }
+        catch (Exception ex)
+        {
+            
+            await alert.Error(ex.Message, "Error");
+        }
+       
+    }
+}

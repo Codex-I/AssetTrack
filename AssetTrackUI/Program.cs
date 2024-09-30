@@ -1,6 +1,9 @@
 using AssetTrackUI;
 using AssetTrackUI.Core.API;
+using AssetTrackUI.Features.Authentication;
+using AssetTrackUI.Features.HttpClientHandlers;
 using AssetTrackUI.Services;
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -16,6 +19,14 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 //builder.Services.AddSingleton(settings);
 builder.Services.AddSingleton<AlertService>();
 builder.Services.AddSingleton<SpinnerService>();
+
+builder.Services.AddTransient<AuthDelegateHandler>();
+builder.Services.AddTransient<CacheDelegateHandler>();
+builder.Services.AddTransient<SpinnerDelegateHandler>();
+
+
+builder.Services.AddAuthorizationCore();
+builder.Services.AddBlazoredLocalStorage();
 
 //builder.Services.AddScoped<Client>();
 var httpClient = new HttpClient { BaseAddress = new Uri("https://localhost:7031/") };

@@ -1,5 +1,6 @@
 ﻿@using System.Net.Http
 @using System.Net.Http.Json
+@using System.Net.Http.Headers
 @using System.Diagnostics.CodeAnalysis
 @using System.Linq.Expressions
 @using System.Globalization
@@ -23,9 +24,10 @@
 @using AssetTrackUI.Components
 @using AssetTrackUI.Components.Forms.Input
 @using AssetTrackUI.Components.Layouts
+@using AssetTrackUI.Features.Authentication
+@using AssetTrackUI.Features.HttpClientHandlers
 @using AssetTrackUI.Pages.Categories
 @using AssetTrackUI.Pages.Locations
-
 @using AssetTrackUI.Pages.Settings
 
 
@@ -34,3 +36,4 @@
 @inject Client apiClient
 @inject NavigationManager nav
 @inject AssetTrackUI.Services.AlertService alert 
+@inject AuthenticationStateProvider auth;
