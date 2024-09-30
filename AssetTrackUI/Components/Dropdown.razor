@@ -1,0 +1,35 @@
+﻿<div class="dropdown">
+    <button @onclick="ToggleDropdown" class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="@IsDropdownOpen.ToString()">
+        @ButtonText
+    </button>
+    <ul class="dropdown-menu dropdown-menu-dark" style="display:@(IsDropdownOpen ? "block" : "none")">
+        @foreach (var item in Items)
+        {
+            <li><a class="dropdown-item" href="@item.Link">@item.Text</a></li>
+        }
+    </ul>
+</div>
+
+@code {
+    [Parameter] public List<DropdownItem> Items { get; set; } = new();
+    [Parameter] public string ButtonText { get; set; } = "Dropdown Button";
+    private bool IsDropdownOpen = false;
+
+    private void ToggleDropdown()
+    {
+        IsDropdownOpen = !IsDropdownOpen;
+        // Here you can add any additional logic when dropdown is shown/hidden.
+        OnDropdownToggle.InvokeAsync(IsDropdownOpen);
+    }
+
+    [Parameter] public EventCallback<bool> OnDropdownToggle { get; set; }
+
+
+    public class DropdownItem
+    {
+        public string? Text { get; set; }
+        public string? Link { get; set; }
+    }
+}
+
+

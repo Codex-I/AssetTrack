@@ -1,0 +1,52 @@
+﻿@typeparam TItem where TItem : class, new()
+@inject NavigationManager Navigation
+
+<div>
+    @if (StepIndex < Steps.Count)
+    {
+        <EditForm Model="Model" OnValidSubmit="HandleNext">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            @Steps[StepIndex]
+
+            <div class="mt-4">
+                @if (StepIndex > 0)
+                {
+                    <button class="btn btn-secondary" @onclick="HandlePrevious">Previous</button>
+                }
+                <button class="btn btn-primary" type="submit">
+                    @(StepIndex == Steps.Count - 1 ? "Finish" : "Next")
+                </button>
+            </div>
+        </EditForm>
+    }
+</div>
+
+@code {
+    [Parameter] public TItem? Model { get; set; }
+    [Parameter] public EventCallback<EditContext> OnFinish { get; set; }
+    [Parameter] public IList<RenderFragment>? Steps { get; set; }
+
+    private int StepIndex { get; set; }
+
+    private void HandlePrevious()
+    {
+        if (StepIndex > 0)
+        {
+            StepIndex--;
+        }
+    }
+
+    private async Task HandleNext()
+    {
+        if (StepIndex < Steps.Count - 1)
+        {
+            StepIndex++;
+        }
+        else
+        {
+            await OnFinish.InvokeAsync();
+        }
+    }
+}

@@ -1,0 +1,58 @@
+﻿<OffCanvas Hidden="@isOffCanvasHidden" HiddenChanged="OnOffCanvasHiddenChanged" Title="Create New Category">
+
+    <Body>
+        <div class="container-fluid p-3">
+            <h5 class="mb-4">Create New Status Label</h5>
+
+            <form>
+                <div class="mb-3">
+                    <label for="statusLabelName" class="form-label">Status label name</label>
+                    <input type="text" class="form-control" id="statusLabelName" placeholder="Name">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Status label colour</label>
+                    <input type="color" class="form-control form-control-color w-100 mb-2" id="statusLabelColor" value="#8d46e7">
+                    <input type="text" class="form-control mb-2" id="hexColor" value="#8d46e7">
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-sm" style="background-color: #ff0000; width: 30px; height: 30px;"></button>
+                        <button type="button" class="btn btn-sm" style="background-color: #ffa500; width: 30px; height: 30px;"></button>
+                        <button type="button" class="btn btn-sm" style="background-color: #ffff00; width: 30px; height: 30px;"></button>
+                        <button type="button" class="btn btn-sm" style="background-color: #008000; width: 30px; height: 30px;"></button>
+                        <button type="button" class="btn btn-sm" style="background-color: #87ceeb; width: 30px; height: 30px;"></button>
+                        <button type="button" class="btn btn-sm" style="background-color: #0000ff; width: 30px; height: 30px;"></button>
+                        <button type="button" class="btn btn-sm" style="background-color: #800080; width: 30px; height: 30px;"></button>
+                    </div>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Save new status</button>
+                </div>
+            </form>
+        </div>
+    </Body>
+    <Footer>
+        <Button Type="Button.Style.ADD">New Field</Button>
+        <Button Type="Button.Style.SAVE">Save Asset</Button>
+    </Footer>
+</OffCanvas>
+
+
+@code {
+    private bool isOffCanvasHidden = true;
+
+    public void OpenOffCanvas()
+    {
+        isOffCanvasHidden = false;
+    }
+
+    private void OnOffCanvasHiddenChanged(bool hidden)
+    {
+        isOffCanvasHidden = hidden;
+    }
+
+    private void CloseOffCanvas()
+    {
+        isOffCanvasHidden = true;
+    }
+}

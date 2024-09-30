@@ -1,0 +1,64 @@
+﻿@using AssetTrackUI.Components
+
+<OffCanvas Hidden="@isOffCanvasHidden" HiddenChanged="OnOffCanvasHiddenChanged" Title="Create New Location">
+
+    <Body>
+        <div class="mb-3">
+            <label for="locationName" class="form-label">Location Name</label>
+            <input type="text" class="form-control" id="locationName" placeholder="Name">
+        </div>
+        <div class="mb-3">
+            <label for="locationAddress" class="form-label">Location address</label>
+            <input type="text" class="form-control" id="locationAddress" placeholder="Name">
+        </div>
+        <div class="mb-3">
+            <label for="contactName" class="form-label">Primary contact name</label>
+            <input type="text" class="form-control" id="contactName" placeholder="Name">
+        </div>
+        <div class="mb-3">
+            <label for="contactEmail" class="form-label">Contact Email</label>
+            <input type="text" class="form-control" id="contactEmail" placeholder="Name">
+        </div>
+        <div class="mb-3">
+            <label for="categoryName" class="form-label">Contact Phone</label>
+            <input type="text" class="form-control" id="categoryName" placeholder="Name">
+        </div>
+        <div class="mb-3">
+            <label for="categoryName" class="form-label">Parent Location</label>
+            <select class="form-select" id="category">
+                <option selected>Parent location</option>
+                <option value="1">Category 1</option>
+                <option value="2">Category 2</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="categoryName" class="form-label">Location Note</label>
+            <input type="text" class="form-control" id="categoryName" placeholder="Name">
+        </div>
+
+       
+      
+    </Body>
+    <Footer>
+        <Button Type="Button.Style.SAVE">Save Location</Button>
+    </Footer>
+</OffCanvas>
+
+@code {
+    private bool isOffCanvasHidden = true;
+
+    public void OpenOffCanvas()
+    {
+        isOffCanvasHidden = false;
+    }
+
+    private void OnOffCanvasHiddenChanged(bool hidden)
+    {
+        isOffCanvasHidden = hidden;
+    }
+
+    private void CloseOffCanvas()
+    {
+        isOffCanvasHidden = true;
+    }
+}

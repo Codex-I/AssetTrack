@@ -1,0 +1,33 @@
+[
+  {
+    "Name": "Menu",
+    "Items": [
+      {
+        "Name": "Dashboard",
+        "Icon": "fa fa-home",
+        "Link": "/Index"
+      },
+      {
+        "Name": "Assets",
+        "Icon": "fa fa-cube",
+        "Link": "/Assets"
+      },
+      {
+        "Name": "Categories",
+        "Icon": "fa fa-cubes",
+        "Link": "/Categories"
+      },
+      {
+        "Name": "Locations",
+        "Icon": "fa fa-compass",
+        "Link": "/Locations"
+      },
+      {
+        "Name": "Settings",
+        "Icon": "fa fa-cogs",
+        "Link": "/Settings"
+
+      }
+    ]
+  }
+]

@@ -1,0 +1,57 @@
+﻿<div class="offcanvas @GetVAlignCss() @ToggleClass() pt-3" data-bs-scroll="true" data-bs-backdrop="true" tabindex="-1" id="offcanvasWithBothOptions" hidden="@isHidden" style="z-index:100;display:block;">
+
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" hidden="@string.IsNullOrEmpty(Title)">@Title</h5>
+        <button class="btn-close" type="button" @onclick="Close" />
+        @Header
+    </div>
+    <div class="offcanvas-body">
+        @Body
+    </div>
+    <div class="offcanvas-footer px-4 d-flex gap-4 justify-content-end" hidden="@(Footer == null)">
+        @Footer
+    </div>
+</div>
+
+@code {
+    [Parameter] public bool Hidden { get; set; } = false;
+    [Parameter] public EventCallback<bool> HiddenChanged { get; set; }
+
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public RenderFragment? Body { get; set; }
+    [Parameter] public RenderFragment? Header { get; set; }
+    [Parameter] public RenderFragment? Footer { get; set; }
+    [Parameter] public ModalVAlign VAlign { get; set; } = ModalVAlign.RIGHT;
+
+    public enum ModalVAlign { LEFT, RIGHT }
+
+    private bool isHidden => Hidden;
+
+    public async Task Close()
+    {
+        Hidden = true;
+        await HiddenChanged.InvokeAsync(Hidden);
+    }
+
+    private string GetVAlignCss()
+    {
+        switch (VAlign)
+        {
+            case ModalVAlign.RIGHT:
+                return "offcanvas-end";
+            default:
+                return "";
+        }
+    }
+    private string ToggleClass()
+    {
+        if (isHidden == true)
+        {
+            return "hide";
+        }
+        else
+        {
+            return "show";
+        }
+    }
+}

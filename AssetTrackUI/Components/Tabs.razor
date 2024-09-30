@@ -1,0 +1,84 @@
+﻿<div style="@GetFixedHeight()" class="vh-100">
+<CascadingValue Value="this">
+	<ul class="@GetNavCss() mb-4">
+		@foreach (TabPage p in pages)
+		{
+		<li class="nav-item">
+			<button type="button"
+					class="nav-link @GetActiveCss(p)"
+					@onclick="e => SetActivePage(p)">
+				@p.Title
+			</button>
+		</li>
+		}
+	</ul>
+    @ChildContent
+</CascadingValue>
+</div>
+
+@code {
+	[Parameter] public RenderFragment? ChildContent { get; set; }
+	[Parameter] public TabStyleEnum TabStyle { get; set; } = TabStyleEnum.PILL;
+	[Parameter] public TabAlignEnum Align { get; set; } = TabAlignEnum.LEFT;
+	[Parameter] public string? CurrentRoute { get; set; }
+	[Parameter] public int? FixedHeight { get; set; }
+
+	public enum TabStyleEnum { TAB, PILL }
+	public enum TabAlignEnum { LEFT, CENTER, RIGHT }
+
+	private List<TabPage> pages = [];
+	private TabPage? activePage;
+
+	public void AddPage(TabPage page)
+	{
+		pages.Add(page);
+
+		if (pages.Count == 1)
+			activePage = page;
+
+		if (CurrentRoute != null && 
+			CurrentRoute == page.Route)
+			activePage = page;
+
+		StateHasChanged();
+	}
+
+	public bool IsActive(TabPage page)
+	{
+		return activePage == page;
+	}
+
+	private string GetNavCss()
+	{
+		var styleCss = "nav nav-tabs";
+		var alignCss = "";
+
+		if (TabStyle == TabStyleEnum.PILL)
+			styleCss = "nav nav-pills";
+
+		if (Align == TabAlignEnum.RIGHT)
+			alignCss = " justify-content-end";
+
+		if (Align == TabAlignEnum.CENTER)
+			alignCss = " justify-content-center";
+
+		return styleCss + alignCss;
+	}
+
+	private string? GetFixedHeight()
+	{
+		if (FixedHeight == null)
+			return null;
+		return $"height: {FixedHeight}px";
+	}
+
+	private string GetActiveCss(TabPage page)
+	{
+		return page == activePage ? "active" : "";
+	}
+
+	private void SetActivePage(TabPage page)
+	{
+		activePage = page;
+	}
+}

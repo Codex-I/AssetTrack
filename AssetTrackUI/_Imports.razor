@@ -1,0 +1,36 @@
+﻿@using System.Net.Http
+@using System.Net.Http.Json
+@using System.Diagnostics.CodeAnalysis
+@using System.Linq.Expressions
+@using System.Globalization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.AspNetCore.Components.WebAssembly.Http
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Sections
+@using Microsoft.JSInterop
+@using AssetTrackUI
+@using AssetTrackUI.Components.MasterPages
+@using AssetTrackUI.Components.Display
+@using AssetTrackUI.Components.Forms
+@using AssetTrackUI.Components.Data
+@using AssetTrackUI.Components.Spinners
+@using AssetTrackUI.Core.API
+
+@using AssetTrackUI.Components
+@using AssetTrackUI.Components.Forms.Input
+@using AssetTrackUI.Components.Layouts
+@using AssetTrackUI.Pages.Categories
+@using AssetTrackUI.Pages.Locations
+
+@using AssetTrackUI.Pages.Settings
+
+
+
+@inject HttpClient Http
+@inject Client apiClient
+@inject NavigationManager nav
+@inject AssetTrackUI.Services.AlertService alert 

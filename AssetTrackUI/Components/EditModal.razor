@@ -1,0 +1,124 @@
+﻿@typeparam TItem where TItem : class, new()
+
+<EditForm Model="Model" OnValidSubmit="Submit" FormName="@formName">
+    <Modal Title="@title" @bind-Hidden="hideModal" @bind-Hidden:after="OnCloseClicked" Size="@Size">
+        <Body>
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            @ChildContent(Model)
+        </Body>
+        <Footer>
+            <Button Type="@buttonStyle">@buttonText</Button>
+        </Footer>
+    </Modal>
+</EditForm>
+
+@code {
+    [Parameter, EditorRequired] public string? LabelText { get; set; }
+    [Parameter, EditorRequired] public RenderFragment<TItem?>? ChildContent { get; set; }
+
+    [Parameter] public EventCallback OnDelete { get; set; }
+    [Parameter] public EventCallback OnUpdate { get; set; }
+    [Parameter] public EventCallback OnCreate { get; set; }
+    [Parameter] public Modal.ModalSize Size { get; set; } = Modal.ModalSize.MEDIUM;
+
+    protected void OnCloseClicked()
+    {
+        tcs?.SetResult(false);
+    }
+
+    protected override void OnParametersSet()
+    {
+        formName = LabelText + "Form";
+    }
+
+    private int isEdit = 0; //0=create ,1=edit ,2=delete
+    public TItem Model = new();
+    private bool hideModal = true;
+    private string? title, buttonText, formName;
+    private Button.Style buttonStyle = Button.Style.SAVE;
+    private TaskCompletionSource<bool>? tcs;
+
+    public bool ForEdit => isEdit > 0;
+
+    public async Task<bool> ShowAsync(TItem? item = null)
+    {
+        tcs = new();
+        Show(item);
+        await tcs.Task;
+        return tcs.Task.Result;
+    }
+
+    public async Task<bool> DeleteAsync(TItem item)
+    {
+        tcs = new();
+        Delete(item);
+        await tcs.Task;
+        return tcs.Task.Result;
+    }
+
+    public void Show(TItem? item = null)
+    {
+        isEdit = item == null ? 0 : 1;
+        Model = item != null ? item : new();
+
+        title = $"Create New {LabelText}";
+        buttonText = $"Create {LabelText}";
+        buttonStyle = Button.Style.SAVE;
+
+        if (isEdit > 0)
+        {
+            title = $"Edit {LabelText}";
+            buttonText = $"Update {LabelText}";
+        }
+        hideModal = false;
+        StateHasChanged();
+    }
+
+    public void Delete(TItem item)
+    {
+        isEdit = 2;
+        Model = item;
+        title = $"Delete {LabelText}";
+        buttonText = $"Delete {LabelText}";
+        buttonStyle = Button.Style.DELETE;
+        hideModal = false;
+        StateHasChanged();
+    }
+
+    private async Task Submit()
+    {
+        try
+        {
+            switch (isEdit)
+            {
+                case 0:
+                    await TryInvokeAsync(OnCreate, "Create");
+                    break;
+                case 1:
+                    await TryInvokeAsync(OnUpdate, "Update");
+                    break;
+                default:
+                    await TryInvokeAsync(OnDelete, "Delete");
+                    break;
+            }
+            await alert.Success($"Operation was successful", "Success");
+            tcs?.SetResult(true);
+            hideModal = true;
+        }
+        catch (Exception ex)
+        {
+            await alert.Error(ex.FormatApiMessage(), "Error");
+        }
+    }
+
+    private async Task TryInvokeAsync(EventCallback callback, string name)
+    {
+        if (!callback.HasDelegate)
+        {
+            await alert.Info($"On{name} Delegate is missing", "Error");
+            return;
+        }
+        await callback.InvokeAsync();
+    }
+}

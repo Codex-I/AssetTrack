@@ -1,0 +1,63 @@
+﻿@page "/create-status-label"
+@using System.ComponentModel.DataAnnotations
+
+<div class="container-fluid p-3">
+    <h5 class="mb-4">Create New Status Label</h5>
+
+    <EditForm Model="@newStatus" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label for="statusLabelName" class="form-label">Status label name</label>
+            <InputText id="statusLabelName" @bind-Value="newStatus.Name" class="form-control" placeholder="Name" />
+            <ValidationMessage For="@(() => newStatus.Name)" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Status label colour</label>
+            <InputText @bind-Value="newStatus.Color" type="color" class="form-control form-control-color w-100 mb-2" />
+            <InputText @bind-Value="newStatus.Color" class="form-control mb-2" />
+            <div class="d-flex justify-content-between">
+                @foreach (var color in presetColors)
+                {
+                    <button type="button" @onclick="() => SetColor(color)"
+                            class="btn btn-sm"
+                            style="background-color: @color; width: 30px; height: 30px;">
+                    </button>
+                }
+            </div>
+        </div>
+
+        <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Save new status</button>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    private StatusLabel newStatus = new StatusLabel();
+    private string[] presetColors = new[] { "#ff0000", "#ffa500", "#ffff00", "#008000", "#87ceeb", "#0000ff", "#800080" };
+
+    private void SetColor(string color)
+    {
+        newStatus.Color = color;
+    }
+
+    private void HandleValidSubmit()
+    {
+        // TODO: Add logic to save the new status
+        Console.WriteLine($"Saving new status: {newStatus.Name}, Color: {newStatus.Color}");
+    }
+
+    public class StatusLabel
+    {
+        [Required]
+        [StringLength(50, ErrorMessage = "Name is too long.")]
+        public string Name { get; set; }
+
+        [Required]
+        [RegularExpression("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$", ErrorMessage = "Invalid color format.")]
+        public string Color { get; set; } = "#8d46e7";
+    }
+}

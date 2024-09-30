@@ -1,0 +1,99 @@
+﻿@page "/Assets"
+@using AssetAPI = AssetTrackUI.Core.API
+@using AssetTrackUI.Components
+@using AssetTrackUI.Components.Layouts  
+@using AssetUI = AssetTrackUI.Models
+@using static AssetTrackUI.Components.Dropdown
+
+<Title>Assets</Title>
+<Card>
+    <Body>
+        <SearchArea>
+            <LeftRight>
+                <Left>
+                    <SearchBox></SearchBox>
+                </Left>
+                <Right>
+                        <Button Type="Button.Style.ADD" @onclick="AssetEditNav">New Asset</Button>
+                </Right>
+            </LeftRight>
+        </SearchArea>
+        <div class="d-flex my-2 gap-5">
+            @for (var i = 0; i < filters.Length; i++)
+            {
+                <Dropdown ButtonText="@filters[i]" Items="@GetDropdownItems(i)"></Dropdown>
+            }
+           
+        </div>
+      
+       
+           
+            <Table Items="assets">
+                <Columns>
+                    <Column Header="#"><input class="form-check-input" type="checkbox" /></Column>
+                    <Column Header="Purchase Date">@context.AcquisitionDate</Column>
+                    <Column Header="ID">@context.Id</Column>
+                    <Column Header="Asset Name">@context.Name</Column>
+                    <Column Header="Category">@context.Category</Column>
+                    <Column Header="Location ID">@context.Location</Column>
+                    <Column Header="Identifier">@context.AssetTag</Column>
+                    <Column Header="Status"><span class="badge rounded text-bg-primary">@context.AssetCondition</span></Column>
+                    <Column Header="Actions">
+                        @* <Actions OnEdit="e => assetEdit.Show(context)"
+                    OnDelete="e => assetEdit.Delete(context)">
+                    </Actions> *@
+                    </Column>
+                </Columns>
+            </Table>
+       @*  }
+        else
+        {
+           
+        } *@
+
+    </Body>
+</Card>
+
+@* <Edit @ref="assetEdit"></Edit> *@
+@code {
+    private string[] filters = { "Status", "Category", "Location", "Department" };
+
+    private List<AssetResponse> assets;
+    public Edit assetEdit = new();
+
+    private List<DropdownItem> dropdownItems = new(); // Store dropdown items here
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var res = await apiClient.ApiAssetsGetAsync(1,20,null);
+            assets = res.ToList();
+        }
+        catch (Exception ex)
+        {
+            await alert.Error(ex.Message, "Error");
+        }
+    }
+
+    // New method to generate dropdown items from API data
+    private List<DropdownItem> GetDropdownItemsFromApi(List<AssetResponse>? assets)
+    {
+        // Check if assets are not null and generate dropdown items from them
+        return assets?.Select(asset => new DropdownItem
+            {
+                Text = asset.Name,  // Assuming 'Name' is a property of Asset
+                Link = $"#/asset/{asset.Id}" // Assuming 'Id' is the unique identifier for Asset
+            }).ToList() ?? new List<DropdownItem>();
+    }
+
+    private List<DropdownItem> GetDropdownItems(int index)
+    {
+        // Return dynamically generated items from the API instead of hardcoded ones
+        return dropdownItems;
+    }
+    private void AssetEditNav()
+    {
+        nav.NavigateTo("/Assets/edit");
+    }
+}

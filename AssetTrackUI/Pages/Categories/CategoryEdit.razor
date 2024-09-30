@@ -1,0 +1,132 @@
+﻿@using AssetTrackUI.Components
+
+<OffCanvas Hidden="@isOffCanvasHidden" HiddenChanged="OnOffCanvasHiddenChanged" Title="Create New Category">
+   
+    <Body>
+        <!-- Category Name -->
+        <div class="mb-3">
+            <label for="categoryName" class="form-label">Category Name</label>
+            <input type="text" class="form-control" id="categoryName" placeholder="Name">
+        </div>
+
+        <!-- Category Field -->
+        <div class="p-3 mb-3 bg-light rounded-3">
+            <h5 class="mb-0 fw-semibold">Category field</h5>
+            <p class="text-body-secondary small">Select a minimum of three fields to quantify the category</p>
+
+            <!-- Category Options (Checkboxes) -->
+            <div class="row g-2 border-bottom pb-3">
+                <div class="col-md-6 lh-lg">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="brandCheck">
+                        <label class="form-check-label" for="brandCheck">Brand</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="vendorCheck">
+                        <label class="form-check-label" for="vendorCheck">Vendor</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="warrantyCheck">
+                        <label class="form-check-label" for="warrantyCheck">Warranty expires</label>
+                    </div>
+                   
+                </div>
+                <div class="col-md-6 lh-lg">
+                  
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="purchaseCostCheck">
+                        <label class="form-check-label" for="purchaseCostCheck">Purchase cost</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="datePurchasedCheck">
+                        <label class="form-check-label" for="datePurchasedCheck">Date purchased</label>
+                    </div>
+                   
+                </div>
+            </div>
+
+            <div class="row g-2 py-3 border-bottom">
+                <div class="col-md-6 lh-lg">
+                    
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="sizeCheck">
+                        <label class="form-check-label" for="sizeCheck">Size</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="lengthCheck">
+                        <label class="form-check-label" for="lengthCheck">Length</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="colourCheck">
+                        <label class="form-check-label" for="colourCheck">Colour</label>
+                    </div>
+
+                </div>
+                <div class="col-md-6 lh-lg">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="heightCheck">
+                        <label class="form-check-label" for="heightCheck">Height</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="weightCheck">
+                        <label class="form-check-label" for="weightCheck">Weight</label>
+                    </div>
+                   
+                </div>
+            </div>
+            <div class="row g-2 pt-3">
+                <div class="col-md-6 lh-lg">
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="sizeCheck">
+                        <label class="form-check-label" for="sizeCheck">Hard drive size</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="lengthCheck">
+                        <label class="form-check-label" for="lengthCheck">RAM</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="colourCheck">
+                        <label class="form-check-label" for="colourCheck">Display Size</label>
+                    </div>
+
+                </div>
+                <div class="col-md-6 lh-lg">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="heightCheck">
+                        <label class="form-check-label" for="heightCheck">Processor</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="weightCheck">
+                        <label class="form-check-label" for="weightCheck">Serial number</label>
+                    </div>
+                   
+                </div>
+            </div>
+          
+        </div>
+    </Body>
+    <Footer>
+        <Button Type="Button.Style.ADD" >New Field</Button>
+        <Button Type="Button.Style.SAVE">Save Asset</Button>
+    </Footer>
+</OffCanvas>
+
+@code {
+    private bool isOffCanvasHidden = true;
+
+    public void OpenOffCanvas()
+    {
+        isOffCanvasHidden = false;
+    }
+
+    private void OnOffCanvasHiddenChanged(bool hidden)
+    {
+        isOffCanvasHidden = hidden;
+    }
+
+    private void CloseOffCanvas()
+    {
+        isOffCanvasHidden = true;
+    }
+}
