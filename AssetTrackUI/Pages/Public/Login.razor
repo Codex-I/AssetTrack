@@ -89,6 +89,7 @@
         {
             var loginResponse = await apiClient.ApiAuthLoginAsync(userLogin);
             await Authenticate(loginResponse);
+            nav.NavigateTo("/Index");
 
         }
         catch (Exception ex)

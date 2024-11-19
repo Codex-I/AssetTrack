@@ -1,8 +1,25 @@
 ﻿@* @page "/" *@
 @page "/Index"
+@attribute [Authorize]
 
 <PageTitle>Home</PageTitle>
-
-<h1>Hello, world!</h1>
+@if(user != null)
+{
+    <h1>Hello, @user.Fullname!</h1>
+}
+else
+{
+    <h1>Hello, world!</h1>
+}
 
 Welcome to your new app.
+
+@code {
+     private UserResponse? user;
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //    var response = await apiClient.();
+    //    user = response.Result;
+    // }
+}
