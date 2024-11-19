@@ -31,7 +31,7 @@
                                                 <label for="Password" class="form-label">Password</label>
                                                 <InputText id="Password" @bind-Value="userLogin.Password" class="form-control" type="password" />
                                             </div>
-                                            <button type="submit" class="btn btn-dark">Signup</button>
+                                           <Button Type="Button.Style.CUSTOM">Sign in</Button>
                                             <p class="mb-0 mt-4 text-center"><a href="#0" class="text-light text-decoration-none">Forgot your password?</a></p>
                                         </EditForm>
                                     </div>
@@ -54,8 +54,8 @@
                                             </div>
                                             <div class="row mb-3 text-start">
                                                 <div class="col-md-6">
-                                                    <label for="Email" class="form-label">Email</label>
-                                                    <InputText id="Email" @bind-Value="Model.Email" class="form-control" />
+                                                    <label for="SignUpEmail" class="form-label">Email</label>
+                                                    <InputText id="SignUpEmail" @bind-Value="Model.Email" class="form-control" />
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label for="Phone" class="form-label">Phone Number</label>
@@ -63,8 +63,8 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-12 mb-3 text-start">
-                                                <label for="Password" class="form-label">Password</label>
-                                                <InputText id="Password" @bind-Value="Model.Password" class="form-control" type="password" />
+                                                <label for="SignUpPassword" class="form-label">Password</label>
+                                                <InputText id="SignUpPassword" @bind-Value="Model.Password" class="form-control" type="password" />
                                             </div>
                                             <button type="submit" class="btn btn-dark">Signup</button>
                                         </EditForm>
